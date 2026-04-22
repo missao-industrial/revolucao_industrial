@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Missão Industrial</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+/* ══════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════ */
+:root {
+  --bg:       #080f1a;
+  --surface:  #0f1c2e;
+  --card:     #162436;
+  --card2:    #1c2e42;
+  --border:   #243650;
+  --border2:  #2e4a6e;
+
+  /* Amber/copper — Revoluções históricas */
+  --amber:    #d97706;
+  --gold:     #f59e0b;
+  --goldlt:   #fbbf24;
+
+  /* Verde — Indústria 5.0 */
+  --green:    #22c55e;
+  --greendk:  #16a34a;
+  --greenlt:  #4ade80;
+
+  /* Azul info */
+  --blue:     #3b82f6;
+  --bluelt:   #60a5fa;
+
+  --text:     #e2ddd4;
+  --muted:    #7a90aa;
+  --red:      #ef4444;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(217,119,6,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(34,197,94,0.05) 0%, transparent 70%);
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 14px; }
+
+/* ── HEADER ─────────────────────────── */
+header {
+  background: linear-gradient(135deg, #0f1c2e 0%, #162436 100%);
+  padding: 0 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  height: 68px;
+  display: flex; align-items: center;
+}
+.hd { display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap; gap:10px; }
+.logo { cursor:pointer; display:flex; align-items:center; gap:14px; }
+.logo h1 {
+  font-family:'Oswald',sans-serif; font-size:22px; font-weight:700;
+  color:var(--gold); letter-spacing:2.5px; text-transform:uppercase;
+  text-shadow:0 0 24px rgba(245,158,11,0.3);
+}
+.logo p { color:var(--muted); font-size:10px; letter-spacing:1.2px; text-transform:uppercase; margin-top:1px; }
+.hd-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.pill {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.25);
+  border-radius:30px; padding:5px 13px;
+  font-size:12px; font-weight:700; color:var(--gold);
+  white-space:nowrap;
+}
+.pill b { font-size:15px; }
+.back-btn {
+  padding:7px 16px;
+  background:linear-gradient(135deg,var(--amber),var(--gold));
+  color:#080f1a; border:none; border-radius:8px;
+  font-size:12px; font-weight:700; cursor:pointer; display:none;
+  font-family:'Oswald',sans-serif; letter-spacing:1px; text-transform:uppercase;
+  transition:all .2s;
+}
+.back-btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(217,119,6,.4); }
+
+/* ── CONTENT AREA ───────────────────── */
+.content-area {
+  background:var(--surface); padding:22px; border-radius:12px;
+  box-shadow:0 4px 24px rgba(0,0,0,.5); border:1px solid var(--border);
+}
+.page { display:none; }
+.page.active { display:block; animation:fadeUp .35s ease; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── TYPOGRAPHY HELPERS ─────────────── */
+.sec-title {
+  font-family:'Oswald',sans-serif; font-size:18px; font-weight:600;
+  color:var(--gold); text-transform:uppercase; letter-spacing:2px;
+  text-align:center; margin:28px 0 16px;
+}
+.sec-title::after {
+  content:''; display:block; width:48px; height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--gold));
+  margin:5px auto 0;
+}
+.green-title { color:var(--green); }
+.green-title::after { background:linear-gradient(90deg,var(--greendk),var(--green)); }
+
+/* ── HOME ───────────────────────────── */
+.hero { text-align:center; padding:20px 12px 10px; }
+.hero h2 {
+  font-family:'Oswald',sans-serif; font-size:27px; color:var(--gold);
+  margin-bottom:10px; letter-spacing:1px;
+}
+.hero p { font-size:14px; color:var(--muted); line-height:1.65; max-width:680px; margin:0 auto; }
+
+/* Journey steps */
+.journey {
+  display:flex; justify-content:center; align-items:center;
+  gap:0; margin:24px 0 8px; flex-wrap:wrap;
+}
+.j-step {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:10px 14px; position:relative;
+}
+.j-step .j-icon {
+  width:42px; height:42px; border-radius:50%;
+  background:var(--card2); border:2px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; transition:.2s;
+}
+.j-step.done .j-icon { border-color:var(--gold); background:rgba(245,158,11,.15); }
+.j-step.active .j-icon { border-color:var(--green); background:rgba(34,197,94,.12); box-shadow:0 0 14px rgba(34,197,94,.25); }
+.j-step .j-label { font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.5px; text-align:center; }
+.j-arrow { color:var(--border); font-size:18px; padding:0 4px; }
+
+/* Module cards grid */
+.mods-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px; margin-top:14px;
+}
+.mod-card {
+  background:var(--card); padding:16px 14px; border-radius:10px;
+  border:1px solid var(--border); cursor:pointer;
+  transition:all .22s; position:relative; overflow:hidden;
+}
+.mod-card::before {
+  content:''; position:absolute; top:0; left:0;
+  width:100%; height:3px;
+  background:linear-gradient(90deg,var(--amber),var(--gold));
+  transform:scaleX(0); transform-origin:left; transition:transform .3s;
+}
+.mod-card.mod-green::before { background:linear-gradient(90deg,var(--greendk),var(--green)); }
+.mod-card:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(217,119,6,.22); border-color:var(--amber); }
+.mod-card.mod-green:hover { box-shadow:0 8px 22px rgba(34,197,94,.18); border-color:var(--greendk); }
+.mod-card:hover::before, .mod-card:focus::before { transform:scaleX(1); }
+.mod-card.locked { opacity:.42; cursor:not-allowed; }
+.mod-icon { font-size:30px; margin-bottom:8px; display:block; }
+.mod-num { font-size:10px; font-weight:700; color:var(--amber); margin-bottom:3px; text-transform:uppercase; letter-spacing:1px; }
+.mod-card.mod-green .mod-num { color:var(--green); }
+.mod-title { font-family:'Oswald',sans-serif; font-size:15px; color:var(--text); margin-bottom:3px; }
+.mod-desc { font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:10px; }
+.mod-badge {
+  display:inline-flex; align-items:center; gap:3px; padding:3px 9px;
+  background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.25);
+  color:var(--gold); border-radius:20px; font-size:10px; font-weight:700;
+}
+.mod-card.mod-green .mod-badge { background:rgba(34,197,94,.12); border-color:rgba(34,197,94,.25); color:var(--green); }
+
+/* ── STANDARD INFO CARD ─────────────── */
+.s-info-card {
+  background:var(--card); border-radius:12px; overflow:hidden;
+  border:1px solid var(--border); margin-bottom:22px;
+}
+.s-info-card .s-header {
+  background:linear-gradient(135deg,rgba(217,119,6,.18) 0%,rgba(245,158,11,.08) 100%);
+  padding:14px 20px; border-bottom:1px solid var(--border);
+  display:flex; gap:12px; align-items:flex-start;
+}
+.s-info-card.green .s-header {
+  background:linear-gradient(135deg,rgba(22,163,74,.2) 0%,rgba(34,197,94,.07) 100%);
+}
+.s-info-card .s-header .s-ico { font-size:28px; flex-shrink:0; margin-top:2px; }
+.s-info-card .s-header h3 {
+  font-family:'Oswald',sans-serif; font-size:17px; color:var(--gold);
+  margin-bottom:4px;
+}
+.s-info-card.green .s-header h3 { color:var(--greenlt); }
+.s-info-card .s-header p { font-size:13px; color:var(--muted); line-height:1.5; }
+.s-info-card .s-body { padding:16px 20px; }
+.s-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+@media(max-width:560px) { .s-row { grid-template-columns:1fr; } }
+.s-item { padding:10px 14px; background:var(--card2); border-radius:8px; border-left:3px solid var(--amber); }
+.s-item.green-l { border-left-color:var(--green); }
+.s-item .s-lbl { font-size:10px; font-weight:700; color:var(--amber); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
+.s-item.green-l .s-lbl { color:var(--green); }
+.s-item p { font-size:12px; color:var(--text); line-height:1.5; }
+
+/* ── MODULE HEADER ──────────────────── */
+.mod-header { text-align:center; margin-bottom:22px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+.mod-header h2 { font-family:'Oswald',sans-serif; font-size:24px; color:var(--gold); margin-bottom:5px; }
+.mod-header.green h2 { color:var(--greenlt); }
+.mod-header p { font-size:13px; color:var(--muted); }
+.inline-stats { display:flex; gap:14px; justify-content:center; margin-bottom:22px; flex-wrap:wrap; }
+.sbox { background:var(--card); padding:10px 18px; border-radius:10px; border:1px solid var(--border); text-align:center; min-width:80px; }
+.sbox .sl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px; }
+.sbox .sv { font-family:'Oswald',sans-serif; font-size:22px; color:var(--gold); }
+
+/* ── GENIALLY WRAPPER ───────────────── */
+.gen-wrap {
+  background:var(--card); padding:16px; border-radius:12px;
+  border:1px solid var(--border); margin:20px 0;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.gen-wrap h3 { font-family:'Oswald',sans-serif; color:var(--gold); margin-bottom:4px; font-size:16px; }
+.gen-wrap.green h3 { color:var(--greenlt); }
+.gen-wrap p { color:var(--muted); font-size:12px; margin-bottom:12px; }
+.gen-wrap iframe { border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,.45); display:block; }
+
+/* ── DOWNLOAD BOX ───────────────────── */
+.dl-box {
+  display:flex; align-items:center; gap:14px;
+  background:var(--card2); padding:14px 18px; border-radius:10px;
+  border:1px solid var(--border); margin:14px 0; flex-wrap:wrap;
+}
+.dl-box .dl-ico { font-size:32px; flex-shrink:0; }
+.dl-box .dl-inf { flex:1; min-width:0; }
+.dl-box .dl-inf h4 { font-family:'Oswald',sans-serif; color:var(--text); font-size:15px; margin-bottom:3px; }
+.dl-box .dl-inf p { color:var(--muted); font-size:11px; line-height:1.4; }
+.btn-dl {
+  padding:9px 20px;
+  background:linear-gradient(135deg,#1e4a7a,#2d6cb0);
+  color:white; border:none; border-radius:8px;
+  font-size:12px; font-weight:700; cursor:pointer; text-decoration:none;
+  font-family:'Oswald',sans-serif; letter-spacing:1px; text-transform:uppercase;
+  white-space:nowrap; transition:all .2s; display:inline-block;
+}
+.btn-dl:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,74,122,.5); }
+
+/* ── BUTTONS ────────────────────────── */
+.btn {
+  padding:11px 26px; border:none; border-radius:8px; cursor:pointer;
+  font-size:14px; font-weight:700; font-family:'Oswald',sans-serif;
+  letter-spacing:1px; text-transform:uppercase; transition:all .2s;
+}
+.btn-amber { background:linear-gradient(135deg,var(--amber),var(--gold)); color:#080f1a; }
+.btn-amber:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(217,119,6,.4); }
+.btn-amber:disabled { opacity:.4; cursor:not-allowed; transform:none; box-shadow:none; }
+.btn-green { background:linear-gradient(135deg,var(--greendk),var(--green)); color:#080f1a; }
+.btn-green:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(34,197,94,.35); }
+.btn-nav { background:linear-gradient(135deg,#1c3a5c,#254a70); color:var(--text); }
+.btn-nav:hover { border-color:var(--border2); transform:translateY(-2px); }
+.center { text-align:center; }
+.mt-20 { margin-top:20px; }
+.mt-32 { margin-top:32px; }
+
+/* ── QUIZ (Module 1) ────────────────── */
+.qz-card { background:var(--card); padding:20px; border-radius:12px; margin-bottom:16px; border-left:4px solid var(--amber); }
+.qz-card h3 { color:var(--text); margin-bottom:12px; font-size:15px; line-height:1.5; }
+.opts { display:flex; flex-direction:column; gap:8px; }
+.opt {
+  padding:11px 14px; background:var(--card2); border:1px solid var(--border);
+  border-radius:8px; text-align:left; cursor:pointer; font-size:13px; color:var(--text);
+  transition:all .18s; font-family:'Lato',sans-serif;
+}
+.opt:hover { border-color:var(--amber); background:rgba(217,119,6,.1); color:var(--goldlt); }
+.opt.sel { border-color:var(--amber); background:rgba(217,119,6,.18); color:var(--goldlt); }
+.opt.ok { border-color:var(--green); background:rgba(34,197,94,.15); color:var(--greenlt); }
+.opt.ng { border-color:var(--red); background:rgba(239,68,68,.12); color:#fca5a5; }
+.qz-res {
+  background:var(--card); padding:28px; border-radius:12px;
+  text-align:center; margin-top:20px; border:1px solid var(--border);
+}
+.qz-res h3 { font-family:'Oswald',sans-serif; font-size:24px; color:var(--gold); margin-bottom:12px; }
+.score-big { font-family:'Oswald',sans-serif; font-size:50px; color:var(--goldlt); margin:12px 0; }
+.bounce-ico { font-size:60px; margin:12px 0; animation:bounce 1.2s ease infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+/* ── MEDALS ─────────────────────────── */
+.medals-sec { margin-top:32px; }
+.medals-sec h3 { font-family:'Oswald',sans-serif; font-size:18px; color:var(--gold); text-align:center; margin-bottom:16px; }
+.medals-sec.green h3 { color:var(--greenlt); }
+.medal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; }
+.m-item {
+  background:var(--card); padding:16px 10px; border-radius:10px;
+  text-align:center; border:1px solid var(--border);
+  opacity:.32; filter:grayscale(1); transition:all .3s;
+}
+.m-item.on {
+  opacity:1; filter:none; border-color:var(--amber);
+  box-shadow:0 4px 16px rgba(217,119,6,.28);
+  animation:mPop .45s ease;
+}
+.m-item.on.gn { border-color:var(--green); box-shadow:0 4px 16px rgba(34,197,94,.25); }
+@keyframes mPop {
+  0%  { transform:scale(.7) rotate(-8deg); opacity:0; }
+  60% { transform:scale(1.1) rotate(3deg); }
+  100%{ transform:scale(1)  rotate(0deg); opacity:1; }
+}
+.m-item.on:hover { transform:translateY(-4px); }
+.m-circle {
+  width:56px; height:56px; margin:0 auto 8px;
+  background:linear-gradient(135deg,var(--amber),var(--gold));
+  border-radius:50%; display:flex; align-items:center;
+  justify-content:center; font-size:26px;
+}
+.m-item.gn .m-circle { background:linear-gradient(135deg,var(--greendk),var(--green)); }
+.m-item.on .m-circle { animation:pulse 2.5s ease infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+.m-name { font-family:'Oswald',sans-serif; font-size:12px; color:var(--text); margin-bottom:2px; }
+.m-desc { font-size:10px; color:var(--muted); }
+
+/* ── GAMES (Módulos 3 & 4) ──────────── */
+.gb { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:22px; }
+.gtop {
+  background:linear-gradient(135deg,#0f1c2e,#162436);
+  padding:12px 16px; display:flex; justify-content:space-between;
+  align-items:center; flex-wrap:wrap; gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.gt-t { font-family:'Oswald',sans-serif; font-size:14px; color:var(--gold); }
+.gt-s { font-size:11px; color:var(--muted); margin-top:1px; }
+.g-stats { display:flex; gap:18px; }
+.g-st { text-align:center; }
+.g-sv { font-family:'Oswald',sans-serif; font-size:20px; color:var(--goldlt); font-weight:700; }
+.g-sl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+.gpanel { padding:16px; background:var(--card); }
+.gterm {
+  background:#03070d; padding:11px 14px;
+  font-family:'Courier New',monospace; font-size:12px;
+  line-height:1.7; min-height:68px; color:var(--amber);
+  border-bottom:1px solid var(--border);
+}
+@keyframes blink4 { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.g1ob {
+  border:1px solid var(--border); background:var(--card2);
+  color:var(--text); padding:9px 12px; border-radius:8px;
+  cursor:pointer; font-size:13px; font-weight:600;
+  transition:all .15s; text-align:left; width:100%;
+  font-family:'Lato',sans-serif;
+}
+.g1ob:hover { background:rgba(217,119,6,.15); border-color:var(--amber); color:var(--goldlt); }
+.g1ob.ok { background:rgba(34,197,94,.18); border-color:var(--green); color:var(--greenlt); }
+.g1ob.ng { background:rgba(239,68,68,.12); border-color:var(--red); color:#fca5a5; }
+.g2tc {
+  border:1px solid var(--border); background:var(--card2);
+  color:var(--text); padding:8px 12px; border-radius:8px;
+  cursor:pointer; font-size:12px; font-weight:600;
+  transition:all .15s; font-family:'Lato',sans-serif;
+}
+.g2tc:hover { background:rgba(217,119,6,.1); border-color:var(--amber); }
+.g2tc.sel { background:rgba(245,158,11,.22); border-color:var(--goldlt); color:var(--goldlt); }
+.g2tc.used { opacity:.32; pointer-events:none; }
+.gfbok { background:rgba(34,197,94,.14); color:var(--greenlt); border:1px solid rgba(34,197,94,.28); border-radius:8px; padding:11px 14px; font-size:13px; line-height:1.5; margin-top:10px; }
+.gfber { background:rgba(239,68,68,.1); color:#fca5a5; border:1px solid rgba(239,68,68,.22); border-radius:8px; padding:11px 14px; font-size:13px; line-height:1.5; margin-top:10px; }
+.gnxt {
+  margin-top:10px; background:linear-gradient(135deg,var(--amber),var(--gold));
+  color:#080f1a; border:none; padding:8px 20px; border-radius:8px;
+  cursor:pointer; font-size:12px; font-weight:700;
+  font-family:'Oswald',sans-serif; letter-spacing:1px; text-transform:uppercase;
+}
+.gres { padding:26px; text-align:center; background:var(--card); border-top:1px solid var(--border); }
+.gres h3 { font-family:'Oswald',sans-serif; font-size:19px; color:var(--gold); margin-bottom:6px; }
+.gfs { font-family:'Oswald',sans-serif; font-size:52px; font-weight:900; color:var(--goldlt); line-height:1; }
+.grt { font-size:15px; margin:8px 0; color:var(--text); }
+.gmsg { color:var(--muted); font-size:12px; max-width:400px; margin:0 auto 12px; }
+.grpl {
+  background:linear-gradient(135deg,var(--amber),var(--gold));
+  color:#080f1a; border:none; padding:9px 22px; border-radius:8px;
+  cursor:pointer; font-size:12px; font-weight:700;
+  font-family:'Oswald',sans-serif; letter-spacing:1px; text-transform:uppercase;
+}
+
+/* ── MODULE 5 GAME ──────────────────── */
+#m5-game-wrap {
+  background:var(--card); border-radius:12px; overflow:hidden;
+  border:1px solid rgba(34,197,94,.25); margin:20px 0;
+}
+.m5-topbar {
+  background:linear-gradient(135deg,rgba(22,163,74,.3),rgba(34,197,94,.1));
+  padding:14px 18px; border-bottom:1px solid rgba(34,197,94,.2);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+}
+.m5-topbar .gt-t { color:var(--greenlt); }
+#m5-pbar-wrap { background:rgba(255,255,255,.06); height:8px; border-radius:8px; overflow:hidden; margin:0 18px 0; }
+#m5-pbar { height:100%; background:linear-gradient(90deg,var(--greendk),var(--green)); width:0%; border-radius:8px; transition:width .5s; }
+.m5-timer { font-size:13px; color:var(--muted); padding:4px 18px; }
+.m5-timer span { color:var(--green); font-weight:700; font-family:'Oswald',sans-serif; font-size:16px; }
+.m5-phase {
+  padding:22px; background:var(--card);
+}
+.m5-phase h2 { font-family:'Oswald',sans-serif; font-size:18px; color:var(--greenlt); margin-bottom:12px; }
+.m5-phase .m5-q { font-size:15px; color:var(--text); line-height:1.6; margin-bottom:16px; font-weight:400; }
+.m5-hint { font-size:12px; color:var(--muted); font-style:italic; margin-top:-8px; margin-bottom:14px; }
+.m5-input-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.m5-inp {
+  flex:1; min-width:200px; padding:11px 14px;
+  background:var(--card2); border:1px solid rgba(34,197,94,.3);
+  border-radius:8px; font-size:14px; color:var(--text);
+  font-family:'Lato',sans-serif; outline:none; transition:all .2s;
+}
+.m5-inp:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(34,197,94,.15); }
+.m5-fb {
+  margin-top:14px; padding:12px 16px; border-radius:8px;
+  font-size:13px; line-height:1.5; transition:all .3s;
+}
+.m5-fb.ok { background:rgba(34,197,94,.15); color:var(--greenlt); border:1px solid rgba(34,197,94,.3); }
+.m5-fb.er { background:rgba(239,68,68,.1); color:#fca5a5; border:1px solid rgba(239,68,68,.22); }
+#m5-final {
+  padding:32px; text-align:center; background:var(--card);
+  border-top:1px solid rgba(34,197,94,.2);
+}
+#m5-final h2 { font-family:'Oswald',sans-serif; font-size:26px; color:var(--green); margin-bottom:10px; }
+#m5-final p { color:var(--muted); font-size:14px; margin-bottom:16px; }
+.m5-score-big { font-family:'Oswald',sans-serif; font-size:52px; color:var(--greenlt); line-height:1; margin:12px 0; }
+
+/* ── REFLECTION MODULE ──────────────── */
+.refl-q {
+  background:var(--card); border-radius:12px; padding:22px;
+  border:1px solid var(--border); margin-bottom:20px;
+}
+.refl-q h3 { font-family:'Oswald',sans-serif; color:var(--gold); font-size:18px; margin-bottom:10px; }
+.refl-q p { color:var(--muted); font-size:14px; line-height:1.7; margin-bottom:16px; }
+.refl-connections { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; margin:16px 0; }
+.refl-pill {
+  background:var(--card2); border-radius:8px; padding:10px 12px;
+  border-left:3px solid var(--amber); font-size:12px; color:var(--text); line-height:1.4;
+}
+.refl-pill strong { color:var(--gold); font-family:'Oswald',sans-serif; display:block; margin-bottom:2px; }
+.r-textarea {
+  width:100%; padding:13px 14px; min-height:130px;
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:8px; font-size:14px; color:var(--text);
+  font-family:'Lato',sans-serif; resize:vertical; outline:none;
+  transition:all .2s; line-height:1.6;
+}
+.r-textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(245,158,11,.12); }
+.char-c { text-align:right; font-size:11px; color:var(--muted); margin-top:4px; }
+.refl-ok {
+  background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.28);
+  border-radius:10px; padding:20px; text-align:center; margin-top:16px;
+}
+.refl-ok h3 { font-family:'Oswald',sans-serif; color:var(--green); margin-bottom:8px; }
+.refl-ok p { color:var(--muted); font-size:13px; }
+
+/* ── METHODOLOGY GRID ───────────────── */
+.meth-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:16px; }
+.meth-c { background:var(--card); padding:14px; border-radius:10px; text-align:center; border:1px solid var(--border); transition:transform .2s; }
+.meth-c:hover { transform:translateY(-3px); }
+.meth-c .ico { font-size:26px; margin-bottom:6px; }
+.meth-c h3 { font-family:'Oswald',sans-serif; color:var(--gold); margin-bottom:4px; font-size:14px; }
+.meth-c p { color:var(--muted); font-size:11px; line-height:1.4; }
+
+/* ── TOAST & VISIT COUNTER ──────────── */
+.toast {
+  position:fixed; bottom:24px; right:24px; display:none; z-index:9999;
+  background:var(--card2); color:var(--text); padding:12px 20px;
+  border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.6);
+  border-left:4px solid var(--amber); font-size:13px; max-width:300px;
+  animation:slideIn .3s ease;
+}
+.toast.show { display:block; }
+.toast.green { border-left-color:var(--green); }
+@keyframes slideIn { from{transform:translateX(340px)} to{transform:translateX(0)} }
+.vctr {
+  position:fixed; bottom:24px; right:24px;
+  background:var(--card2); color:var(--muted);
+  padding:6px 12px; border-radius:24px; font-size:11px; font-weight:700;
+  box-shadow:0 4px 14px rgba(0,0,0,.4); border:1px solid var(--border);
+  display:flex; align-items:center; gap:6px; z-index:997;
+}
+.vctr b { color:var(--gold); font-size:14px; }
+
+/* ── SEPARATOR ──────────────────────── */
+hr.sep { border:none; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:28px 0; }
+
+/* ── FOOTER ─────────────────────────── */
+footer { margin-top:28px; padding:14px 18px; background:var(--card); border-radius:8px; border-top:2px solid var(--amber); text-align:center; }
+footer .ftcc { color:var(--gold); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
+footer .fbody { color:var(--text); font-size:11px; line-height:1.6; }
+footer .fbody strong { color:var(--gold); }
+footer .fcopy { color:var(--muted); font-size:10px; margin-top:6px; }
+
+/* ── RESPONSIVE ─────────────────────── */
+@media(max-width:640px) {
+  .hd { flex-direction:column; text-align:center; }
+  header { height:auto; padding:12px 14px; }
+  .logo { flex-direction:column; gap:4px; }
+  .hd-right { width:100%; justify-content:center; }
+  #g1-options, .g1-options-grid { grid-template-columns:1fr !important; }
+  #g2-drop-areas { grid-template-columns:1fr !important; }
+  .m5-input-row { flex-direction:column; }
+  .m5-inp { width:100%; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="hd">
+    <div class="logo" onclick="goHome()">
+      <svg width="46" height="46" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="80" width="120" height="100" fill="#d97706" stroke="#a05010" stroke-width="2"/>
+        <rect x="55" y="95" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="87" y="95" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="119" y="95" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="55" y="130" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="87" y="130" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="119" y="130" width="17" height="21" fill="#fbbf24" opacity=".8"/>
+        <rect x="84" y="150" width="32" height="30" fill="#7a3010"/>
+        <rect x="56" y="28" width="18" height="52" fill="#a05010"/><rect x="53" y="22" width="24" height="8" fill="#7a3010"/>
+        <rect x="116" y="38" width="18" height="42" fill="#a05010"/><rect x="113" y="32" width="24" height="8" fill="#7a3010"/>
+        <ellipse cx="65" cy="16" rx="8" ry="6" fill="#606070" opacity=".6">
+          <animate attributeName="cy" values="16;6;16" dur="3s" repeatCount="indefinite"/>
+        </ellipse>
+        <ellipse cx="125" cy="26" rx="8" ry="6" fill="#606070" opacity=".6">
+          <animate attributeName="cy" values="26;16;26" dur="2.8s" repeatCount="indefinite"/>
+        </ellipse>
+        <circle cx="100" cy="50" r="13" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+        <circle cx="100" cy="50" r="5" fill="#7a3010"/>
+        <line x1="100" y1="37" x2="100" y2="44" stroke="#d97706" stroke-width="3"/>
+        <line x1="100" y1="56" x2="100" y2="63" stroke="#d97706" stroke-width="3"/>
+        <line x1="87" y1="50" x2="94" y2="50" stroke="#d97706" stroke-width="3"/>
+        <line x1="106" y1="50" x2="113" y2="50" stroke="#d97706" stroke-width="3"/>
+        <rect x="0" y="180" width="200" height="20" fill="#7a3010"/>
+      </svg>
+      <div>
+        <h1 id="siteTitle">⚙️ MISSÃO INDUSTRIAL</h1>
+        <p>Recurso Educacional · Revoluções Industriais · UNESP</p>
+      </div>
+    </div>
+    <div class="hd-right">
+      <div class="pill">⭐ <b id="hPts">0</b> pts</div>
+      <div class="pill">🏅 <b id="hMeds">0</b> medalhas</div>
+      <button class="back-btn" id="backBtn" onclick="goHome()">⬅ Início</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ MAIN ══════════ -->
+<main class="content-area">
+
+<!-- ████████████████████  HOME  ████████████████████ -->
+<div id="homePage" class="page active">
+  <div class="hero">
+    <h2>Bem-vindo(a) à Missão Industrial 🚀</h2>
+    <p>Uma jornada interativa pelas Revoluções que moldaram o mundo — do vapor do século XVIII à Indústria 5.0 do presente. Complete módulos, ganhe medalhas e salve o futuro!</p>
+  </div>
+
+  <!-- Journey steps -->
+  <div class="journey">
+    <div class="j-step"><div class="j-icon">🏭</div><div class="j-label">1ª Rev.</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">⚡</div><div class="j-label">2ª Rev.</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">🗺️</div><div class="j-label">Fábricas</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">🤖</div><div class="j-label">Rede 4.0</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">🌱</div><div class="j-label">5.0</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">💭</div><div class="j-label">Reflexão</div></div>
+    <div class="j-arrow">›</div>
+    <div class="j-step"><div class="j-icon">🏛️</div><div class="j-label">Museu</div></div>
+  </div>
+
+  <div class="sec-title">Selecione um Módulo</div>
+  <div class="mods-grid">
+    <div class="mod-card" onclick="openMod('module1')">
+      <span class="mod-icon">🏭</span>
+      <div class="mod-num">Módulo 1</div>
+      <div class="mod-title">1ª Revolução Industrial</div>
+      <div class="mod-desc">Vapor, carvão, têxtil e urbanização · 1760–1840</div>
+      <span class="mod-badge">✅ Experiência Imersiva</span>
+    </div>
+    <div class="mod-card" onclick="openMod('module2')">
+      <span class="mod-icon">⚡</span>
+      <div class="mod-num">Módulo 2</div>
+      <div class="mod-title">2ª Revolução Industrial</div>
+      <div class="mod-desc">Eletricidade, petróleo, aço e fordismo · 1850–1945</div>
+      <span class="mod-badge">🎲 Jogo de Tabuleiro</span>
+    </div>
+    <div class="mod-card" onclick="openMod('module3')">
+      <span class="mod-icon">🗺️</span>
+      <div class="mod-num">Módulo 3</div>
+      <div class="mod-title">Fábricas do Mundo</div>
+      <div class="mod-desc">Fordismo, redes de circulação e território · Séc. XX</div>
+      <span class="mod-badge">🎮 Jogo de Perguntas</span>
+    </div>
+    <div class="mod-card" onclick="openMod('module4')">
+      <span class="mod-icon">🤖</span>
+      <div class="mod-num">Módulo 4</div>
+      <div class="mod-title">Rede 4.0</div>
+      <div class="mod-desc">IA, IoT, cidades inteligentes e desigualdade digital · Séc. XXI</div>
+      <span class="mod-badge">🎮 Jogo de Classificação</span>
+    </div>
+    <div class="mod-card mod-green" onclick="openMod('module5')">
+      <span class="mod-icon">🌱</span>
+      <div class="mod-num">Módulo 5</div>
+      <div class="mod-title">Missão 5.0</div>
+      <div class="mod-desc">Sociedade 5.0, sustentabilidade e futuro humano</div>
+      <span class="mod-badge">🚀 Missão Interativa</span>
+    </div>
+    <div class="mod-card mod-green" onclick="openMod('reflexao')">
+      <span class="mod-icon">💭</span>
+      <div class="mod-num">Reflexão Final</div>
+      <div class="mod-title">O Futuro da Indústria</div>
+      <div class="mod-desc">Conecte as revoluções e reflita sobre o papel humano</div>
+      <span class="mod-badge">✍️ Pensamento Crítico</span>
+    </div>
+    <div class="mod-card" onclick="openMod('museufinal')">
+      <span class="mod-icon">🏛️</span>
+      <div class="mod-num">Jogo Final</div>
+      <div class="mod-title">Museu Industrial</div>
+      <div class="mod-desc">Experiência imersiva que conecta todos os módulos</div>
+      <span class="mod-badge">🏛️ Experiência Completa</span>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="sec-title">Sobre Este Recurso</div>
+  <p style="text-align:center;color:var(--muted);font-size:13px;max-width:660px;margin:0 auto 16px;line-height:1.7;">Desenvolvido com base em metodologias ativas, gamificação e ensino híbrido. Cada módulo combina conteúdo, jogo e reflexão para que o aluno seja protagonista da sua aprendizagem.</p>
+  <div class="meth-grid">
+    <div class="meth-c"><div class="ico">🎯</div><h3>Metodologias Ativas</h3><p>Protagonismo e autonomia</p></div>
+    <div class="meth-c"><div class="ico">🎮</div><h3>Gamificação</h3><p>Pontos, medalhas e combos</p></div>
+    <div class="meth-c"><div class="ico">💻</div><h3>Ensino Híbrido</h3><p>Digital + colaborativo</p></div>
+    <div class="meth-c"><div class="ico">🌍</div><h3>Interdisciplinar</h3><p>História + Geografia + Tecnologia</p></div>
+  </div>
+
+  <footer>
+    <div class="ftcc">📚 Trabalho de Conclusão de Curso</div>
+    <div class="fbody">Recurso Educacional — <strong>Coordenadoria de Desenvolvimento Profissional e Práticas Pedagógicas — Profa. Adriana Chaves</strong><br>
+    <strong>UNIVERSIDADE ESTADUAL PAULISTA "JÚLIO DE MESQUITA FILHO" — UNESP</strong><br>
+    <em>Felipe Oliveira Linard · Nathália Cristiane Santos · Sabrina Teixeira</em></div>
+    <div class="fcopy">© 2024 Missão Industrial — UNESP | CC BY-NC-SA</div>
+  </footer>
+</div>
+
+<!-- ████████████████  MÓDULO 1 — 1ª RI  ████████████████ -->
+<div id="module1Page" class="page">
+  <div class="inline-stats">
+    <div class="sbox"><div class="sl">Pontos</div><div class="sv" id="m1Pts">0</div></div>
+    <div class="sbox"><div class="sl">Medalhas</div><div class="sv" id="m1Meds">0</div></div>
+  </div>
+  <div class="mod-header">
+    <h2>🏭 Módulo 1 — 1ª Revolução Industrial</h2>
+    <p>Vapor, carvão, mecanização e novas relações de trabalho · Inglaterra → Mundo (1760–1840)</p>
+  </div>
+
+  <!-- Standard Info Card -->
+  <div class="s-info-card">
+    <div class="s-header">
+      <div class="s-ico">📖</div>
+      <div>
+        <h3>Sobre o Tema</h3>
+        <p>Iniciada na Inglaterra no final do séc. XVIII, a 1ª Revolução Industrial substituiu o trabalho artesanal pela produção mecanizada a vapor. O setor têxtil liderou a transformação, seguido pela mineração de carvão e pelas ferrovias. A população migrou em massa para as cidades, criando o proletariado urbano e as condições para os movimentos operários do séc. XIX.</p>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="s-row">
+        <div class="s-item">
+          <div class="s-lbl">🎯 Tema</div>
+          <p>Mecanização, vapor, urbanização e surgimento da classe operária</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">🕹️ Objetivo</div>
+          <p>Explorar o espaço e contexto da 1ª Revolução Industrial de forma imersiva</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">⚙️ Como Funciona</div>
+          <p>Explore o museu interativo, responda o desafio final e desbloqueie conquistas</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">📚 Aprendizagens</div>
+          <p>Industrialização, urbanização, trabalho fabril, relações sociais e impactos territoriais</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Genially Experience -->
+  <div class="gen-wrap">
+    <h3>🏛️ Experiência Imersiva — 1ª Revolução Industrial</h3>
+    <p>Explore o museu interativo: artefatos, personagens e contextos históricos da industrialização inglesa.</p>
+    <iframe src="https://view.genially.com/69b3362d508d939cda4b8dd9" style="width:100%;height:680px;border:none;" title="Museu Imersivo — 1ª RI" allow="fullscreen;picture-in-picture"></iframe>
+  </div>
+
+  <!-- Quiz — Desafio Final -->
+  <div class="sec-title">🎯 Desafio Final — Quiz</div>
+  <div id="qz-container">
+    <div class="qz-card">
+      <h3>1. Qual país foi o berço da Revolução Industrial?</h3>
+      <div class="opts">
+        <button class="opt" data-q="q1" data-a="a">A) França</button>
+        <button class="opt" data-q="q1" data-a="b">B) Inglaterra</button>
+        <button class="opt" data-q="q1" data-a="c">C) Alemanha</button>
+        <button class="opt" data-q="q1" data-a="d">D) Estados Unidos</button>
+      </div>
+    </div>
+    <div class="qz-card">
+      <h3>2. Qual foi a principal fonte de energia da 1ª Revolução Industrial?</h3>
+      <div class="opts">
+        <button class="opt" data-q="q2" data-a="a">A) Eletricidade</button>
+        <button class="opt" data-q="q2" data-a="b">B) Petróleo</button>
+        <button class="opt" data-q="q2" data-a="c">C) Carvão e vapor</button>
+        <button class="opt" data-q="q2" data-a="d">D) Energia solar</button>
+      </div>
+    </div>
+    <div class="qz-card">
+      <h3>3. O que caracterizou a urbanização durante a Revolução Industrial?</h3>
+      <div class="opts">
+        <button class="opt" data-q="q3" data-a="a">A) Êxodo das cidades para o campo</button>
+        <button class="opt" data-q="q3" data-a="b">B) Crescimento acelerado das cidades industriais</button>
+        <button class="opt" data-q="q3" data-a="c">C) Diminuição geral da população</button>
+        <button class="opt" data-q="q3" data-a="d">D) Isolamento rural e fim do comércio</button>
+      </div>
+    </div>
+    <div class="qz-card">
+      <h3>4. Qual setor industrial foi o primeiro a ser mecanizado em larga escala?</h3>
+      <div class="opts">
+        <button class="opt" data-q="q4" data-a="a">A) Automobilístico</button>
+        <button class="opt" data-q="q4" data-a="b">B) Alimentício</button>
+        <button class="opt" data-q="q4" data-a="c">C) Têxtil</button>
+        <button class="opt" data-q="q4" data-a="d">D) Eletrônico</button>
+      </div>
+    </div>
+    <div class="center mt-20">
+      <button class="btn btn-amber" onclick="submitQz()" id="submitQzBtn">Enviar Respostas 🚀</button>
+    </div>
+  </div>
+  <div id="qz-result" style="display:none;"></div>
+
+  <!-- Medals -->
+  <div class="medals-sec">
+    <h3>🏆 Suas Conquistas — Módulo 1</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-museu1"><div class="m-circle">🏛️</div><div class="m-name">Museólogo</div><div class="m-desc">Explorou o museu</div></div>
+      <div class="m-item" id="m-quiz1"><div class="m-circle">💭</div><div class="m-name">Pensador</div><div class="m-desc">Completou o quiz</div></div>
+      <div class="m-item" id="m-master1"><div class="m-circle">👑</div><div class="m-name">Mestre Industrial</div><div class="m-desc">Nota máxima no quiz</div></div>
+    </div>
+  </div>
+
+  <div class="center mt-32">
+    <button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button>
+  </div>
+</div>
+
+<!-- ████████████████  MÓDULO 2 — 2ª RI  ████████████████ -->
+<div id="module2Page" class="page">
+  <div class="inline-stats">
+    <div class="sbox"><div class="sl">Pontos</div><div class="sv" id="m2Pts">0</div></div>
+    <div class="sbox"><div class="sl">Medalhas</div><div class="sv" id="m2Meds">0</div></div>
+  </div>
+  <div class="mod-header">
+    <h2>⚡ Módulo 2 — 2ª Revolução Industrial</h2>
+    <p>Eletricidade, petróleo, fordismo e imperialismo · 1850–1945</p>
+  </div>
+
+  <!-- Standard Info Card -->
+  <div class="s-info-card">
+    <div class="s-header">
+      <div class="s-ico">📖</div>
+      <div>
+        <h3>Sobre o Tema</h3>
+        <p>A partir de 1850, eletricidade e petróleo substituíram o carvão da 1ª fase. A linha de montagem fordista e o taylorismo reorganizaram o trabalho. EUA, Alemanha e Japão emergiram como potências. A necessidade de matérias-primas e mercados consumidores impulsionou o imperialismo europeu, forjando a divisão internacional do trabalho que estrutura o mundo até hoje.</p>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="s-row">
+        <div class="s-item">
+          <div class="s-lbl">🎯 Tema</div>
+          <p>Eletricidade, petróleo, fordismo, imperialismo e concentração econômica</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">🕹️ Objetivo</div>
+          <p>Compreender as inovações tecnológicas e seus impactos econômicos e geopolíticos</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">⚙️ Como Funciona</div>
+          <p>Jogo de tabuleiro com cartas de perguntas — jogue digital ou imprima para o físico!</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">📚 Aprendizagens</div>
+          <p>Fontes de energia, industrialização global, trustes, sindicatos e divisão do trabalho</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Genially Board Game -->
+  <div class="gen-wrap">
+    <h3>🎲 Jogo de Tabuleiro — 2ª Revolução Industrial</h3>
+    <p>Explore inovações tecnológicas, fontes de energia e impactos econômicos. Ideal para jogar em equipe!</p>
+    <iframe src="https://view.genially.com/69d6dd34c0fe0d81c79340fc" style="width:100%;height:680px;border:none;" title="Tabuleiro — 2ª RI" allow="fullscreen;picture-in-picture"></iframe>
+  </div>
+
+  <!-- Card Download -->
+  <div class="sec-title">🃏 Cartas do Jogo — Impressão</div>
+  <p style="text-align:center;color:var(--muted);font-size:12px;margin-bottom:12px;">Baixe e imprima para jogar de forma física em sala de aula:</p>
+  <div class="dl-box">
+    <div class="dl-ico">📄</div>
+    <div class="dl-inf">
+      <h4>Cartas do Jogo — 2ª Revolução Industrial</h4>
+      <p>3 categorias: Inovações Tecnológicas · Fontes de Energia · Produtividade e Empregos · Formato A4</p>
+    </div>
+    <a href="Cartas_jogo__1_.pdf" download="Cartas_Jogo_2aRI.pdf" class="btn-dl" onclick="unlockMedal('m-cartas','Colecionador','🃏')">⬇ Baixar PDF</a>
+  </div>
+
+  <!-- Medals -->
+  <div class="medals-sec">
+    <h3>🏆 Suas Conquistas — Módulo 2</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-tabuleiro"><div class="m-circle">🎲</div><div class="m-name">Estrategista</div><div class="m-desc">Jogou o tabuleiro</div></div>
+      <div class="m-item" id="m-cartas"><div class="m-circle">🃏</div><div class="m-name">Colecionador</div><div class="m-desc">Baixou as cartas</div></div>
+      <div class="m-item" id="m-ford"><div class="m-circle">🚗</div><div class="m-name">Fordista</div><div class="m-desc">Completou o módulo 2</div></div>
+    </div>
+  </div>
+
+  <div class="center mt-32">
+    <button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button>
+  </div>
+</div>
+
+<!-- ████████████████  MÓDULO 3 — FÁBRICAS  ████████████████ -->
+<div id="module3Page" class="page">
+  <div class="inline-stats">
+    <div class="sbox"><div class="sl">Pontos</div><div class="sv" id="m3Pts">0</div></div>
+    <div class="sbox"><div class="sl">Fábricas</div><div class="sv" id="m3Fac">0</div></div>
+  </div>
+  <div class="mod-header">
+    <h2>🗺️ Módulo 3 — Fábricas do Mundo</h2>
+    <p>Industrialização de massas, Fordismo, urbanização e redes de circulação · Século XX</p>
+  </div>
+
+  <!-- Standard Info Card -->
+  <div class="s-info-card">
+    <div class="s-header">
+      <div class="s-ico">📖</div>
+      <div>
+        <h3>Sobre o Tema</h3>
+        <p>No séc. XX, a industrialização se espalhou pelo mundo com o modelo fordista. Fábricas, portos, ferrovias e mercados consumidores formaram redes complexas. A distribuição geográfica das indústrias criou desigualdades regionais profundas e definiu o papel de cada país na economia global.</p>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="s-row">
+        <div class="s-item">
+          <div class="s-lbl">🎯 Tema</div>
+          <p>Industrialização de massas, Fordismo, urbanização e redes de circulação</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">🕹️ Objetivo</div>
+          <p>Entender como energia, transporte, trabalho e mercado se articulam na industrialização do séc. XX</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">⚙️ Como Funciona</div>
+          <p>Responda perguntas sobre a 2ª RI e o séc. XX para construir fábricas no mapa-múndi</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">📚 Aprendizagens</div>
+          <p>Urbanização, divisão regional do trabalho, logística, concentração industrial e desigualdades</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Board -->
+  <div class="gb">
+    <div class="gtop">
+      <div><div class="gt-t">🏭 Fábricas do Mundo</div><div class="gt-s" id="g1-prog">Pergunta 1 de 8</div></div>
+      <div class="g-stats">
+        <div class="g-st"><div class="g-sv" id="g1-score">0</div><div class="g-sl">Fábricas</div></div>
+        <div class="g-st"><div class="g-sv" id="g1-lives">3</div><div class="g-sl">Tentativas</div></div>
+      </div>
+    </div>
+    <!-- Map SVG -->
+    <div id="g1-map" style="background:#0a1e30;position:relative;height:260px;overflow:hidden;">
+      <svg width="100%" height="100%" viewBox="0 0 700 260" style="position:absolute;inset:0;">
+        <rect width="700" height="260" fill="#0a1e30"/>
+        <path d="M310,52 L360,47 L380,62 L370,82 L350,87 L330,77 L310,72Z" fill="#1a4030" stroke="#2a6040" stroke-width="1.5"/>
+        <path d="M100,42 L200,37 L210,72 L200,112 L170,122 L140,102 L110,82 L95,62Z" fill="#1a4030" stroke="#2a6040" stroke-width="1.5"/>
+        <path d="M155,135 L200,130 L210,167 L200,212 L175,227 L155,217 L145,187 L148,155Z" fill="#1a4030" stroke="#2a6040" stroke-width="1.5"/>
+        <path d="M305,92 L360,92 L370,137 L355,187 L330,202 L310,187 L300,152 L302,115Z" fill="#6b4a10" stroke="#8b6018" stroke-width="1.5"/>
+        <path d="M390,42 L540,42 L570,79 L570,119 L530,137 L480,147 L440,129 L400,109 L385,79Z" fill="#1a4030" stroke="#2a6040" stroke-width="1.5"/>
+        <ellipse cx="552" cy="85" rx="11" ry="17" fill="#6b1a1a" stroke="#9b2a2a" stroke-width="1.5"/>
+        <path d="M490,187 L560,182 L575,215 L560,239 L520,245 L490,227Z" fill="#1a4030" stroke="#2a6040" stroke-width="1.5"/>
+        <text x="152" y="79" font-size="9" fill="#e2ddd4" font-family="Oswald,sans-serif">EUA</text>
+        <text x="328" y="67" font-size="8" fill="#e2ddd4" font-family="Oswald,sans-serif">EUR</text>
+        <text x="160" y="177" font-size="7" fill="#e2ddd4" font-family="Oswald,sans-serif">BRASIL</text>
+        <text x="315" y="145" font-size="7" fill="#e2ddd4" font-family="Oswald,sans-serif">ÁFRICA</text>
+        <text x="452" y="92" font-size="8" fill="#e2ddd4" font-family="Oswald,sans-serif">ÁSIA</text>
+        <text x="537" y="82" font-size="7" fill="#fff" font-family="Oswald,sans-serif">JAP</text>
+      </svg>
+      <div id="g1-facs" style="position:absolute;inset:0;pointer-events:none;"></div>
+      <div id="g1-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);color:var(--text);padding:.65rem 1.2rem;border-radius:8px;text-align:center;font-size:.8rem;pointer-events:none;border:1px solid var(--border);">Responda as perguntas para construir fábricas! 🏭</div>
+    </div>
+    <!-- Question -->
+    <div id="g1-qpanel" class="gpanel">
+      <div id="g1-qtext" style="font-size:14px;font-weight:700;color:var(--goldlt);margin-bottom:12px;line-height:1.5;">Carregando...</div>
+      <div id="g1-opts" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+      <div id="g1-fb" style="display:none;margin-top:10px;"></div>
+      <button id="g1-nxt" class="gnxt" onclick="g1Next()" style="display:none;">Próxima →</button>
+    </div>
+    <div id="g1-res" class="gres" style="display:none;">
+      <h3>🏭 Jogo Concluído!</h3>
+      <div class="gfs" id="g1-fs">0</div>
+      <p style="color:var(--muted);margin:4px 0;">fábricas construídas de 8 possíveis</p>
+      <div class="grt" id="g1-rt"></div>
+      <p class="gmsg" id="g1-msg"></p>
+      <button class="grpl" onclick="g1Init()">🔄 Jogar novamente</button>
+    </div>
+  </div>
+
+  <!-- Medals -->
+  <div class="medals-sec">
+    <h3>🏆 Suas Conquistas — Módulo 3</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-m3s"><div class="m-circle">🗺️</div><div class="m-name">Cartógrafo</div><div class="m-desc">Iniciou o jogo</div></div>
+      <div class="m-item" id="m-m3f"><div class="m-circle">🏭</div><div class="m-name">Capitalista</div><div class="m-desc">5+ fábricas</div></div>
+      <div class="m-item" id="m-m3p"><div class="m-circle">🏆</div><div class="m-name">Magnata</div><div class="m-desc">8/8 corretas</div></div>
+    </div>
+  </div>
+  <div class="center mt-32"><button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button></div>
+</div>
+
+<!-- ████████████████  MÓDULO 4 — REDE 4.0  ████████████████ -->
+<div id="module4Page" class="page">
+  <div class="inline-stats">
+    <div class="sbox"><div class="sl">Pontos</div><div class="sv" id="m4Pts">0</div></div>
+    <div class="sbox"><div class="sl">Combo</div><div class="sv" id="m4Combo">x1</div></div>
+  </div>
+  <div class="mod-header">
+    <h2>🤖 Módulo 4 — Rede 4.0</h2>
+    <p>Dados, inteligência artificial e território · Indústria 4.0 / Século XXI</p>
+  </div>
+
+  <!-- Standard Info Card -->
+  <div class="s-info-card">
+    <div class="s-header">
+      <div class="s-ico">📖</div>
+      <div>
+        <h3>Sobre o Tema</h3>
+        <p>A Indústria 4.0 conecta o mundo físico ao digital. IoT, IA, automação e big data transformam produção, cidades e trabalho. Mas essa transformação é desigual: países sem infraestrutura digital ficam ainda mais vulneráveis à dependência tecnológica e ao desemprego estrutural.</p>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="s-row">
+        <div class="s-item">
+          <div class="s-lbl">🎯 Tema</div>
+          <p>Transformação digital, Indústria 4.0, cidades inteligentes e desigualdade informacional</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">🕹️ Objetivo</div>
+          <p>Perceber que a indústria atual depende de redes digitais, dados, sensores e algoritmos</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">⚙️ Como Funciona</div>
+          <p>Classifique tecnologias nas categorias corretas para construir sua cidade inteligente. Acertos consecutivos ativam Combos!</p>
+        </div>
+        <div class="s-item">
+          <div class="s-lbl">📚 Aprendizagens</div>
+          <p>Smart cities, impactos da IA, desigualdades digitais, sustentabilidade e cidadania tecnológica</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Board -->
+  <div class="gb">
+    <div class="gtop">
+      <div><div class="gt-t">🤖 Conecta Futuro — Rede 4.0</div><div class="gt-s" id="g2-prog">Rodada 1 de 6</div></div>
+      <div class="g-stats">
+        <div class="g-st"><div class="g-sv" id="g2-score">0</div><div class="g-sl">Pontos</div></div>
+        <div class="g-st"><div class="g-sv" id="g2-combo">x1</div><div class="g-sl">Combo</div></div>
+      </div>
+    </div>
+    <div class="gterm" id="g2-term">
+      <span style="color:var(--goldlt);">[CIDADE INTELIGENTE 4.0]</span><br>
+      <span style="color:var(--muted);">&gt; Classifique as tecnologias para construir sua cidade!</span><br>
+      <span style="animation:blink4 1s infinite;color:var(--amber);">_</span>
+    </div>
+    <div id="g2-panel" class="gpanel">
+      <h4 id="g2-qtitle" style="color:var(--goldlt);font-family:'Oswald',sans-serif;font-size:15px;margin-bottom:6px;"></h4>
+      <p id="g2-instr" style="font-size:12px;color:var(--muted);margin-bottom:12px;"></p>
+      <div id="g2-cards" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
+      <div id="g2-drops" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;"></div>
+      <button onclick="g2Check()" class="btn btn-amber" style="font-size:12px;padding:8px 20px;">✓ Verificar</button>
+      <div id="g2-fb" style="display:none;margin-top:10px;"></div>
+      <button id="g2-nxt" class="gnxt" onclick="g2Next()" style="display:none;">Próxima rodada →</button>
+    </div>
+    <div id="g2-res" class="gres" style="display:none;">
+      <h3>🏙️ Cidade Construída!</h3>
+      <div class="gfs" id="g2-fs">0</div>
+      <p style="color:var(--muted);margin:4px 0;">pontos conquistados</p>
+      <div class="grt" id="g2-rt"></div>
+      <p class="gmsg" id="g2-msg"></p>
+      <button class="grpl" onclick="g2Init()">🔄 Jogar novamente</button>
+    </div>
+  </div>
+
+  <!-- Medals -->
+  <div class="medals-sec">
+    <h3>🏆 Suas Conquistas — Módulo 4</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-m4s"><div class="m-circle">💡</div><div class="m-name">Inovador</div><div class="m-desc">Iniciou o Rede 4.0</div></div>
+      <div class="m-item" id="m-m4c"><div class="m-circle">🔥</div><div class="m-name">Combo Master</div><div class="m-desc">Combo x3</div></div>
+      <div class="m-item" id="m-m4a"><div class="m-circle">🏙️</div><div class="m-name">Arquiteto</div><div class="m-desc">500+ pontos</div></div>
+    </div>
+  </div>
+  <div class="center mt-32"><button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button></div>
+</div>
+
+<!-- ████████████████  MÓDULO 5 — MISSÃO 5.0  ████████████████ -->
+<div id="module5Page" class="page">
+  <div class="inline-stats">
+    <div class="sbox"><div class="sl">Pontos</div><div class="sv" id="m5Pts">0</div></div>
+    <div class="sbox"><div class="sl">Fases</div><div class="sv" id="m5Phases">0/9</div></div>
+  </div>
+  <div class="mod-header green">
+    <h2>🌱 Módulo 5 — Missão 5.0</h2>
+    <p>Inteligência Artificial, Sustentabilidade e Indústria 5.0 · Século XXI</p>
+  </div>
+
+  <!-- Standard Info Card -->
+  <div class="s-info-card green">
+    <div class="s-header">
+      <div class="s-ico">📖</div>
+      <div>
+        <h3>Sobre o Tema</h3>
+        <p>A Indústria 5.0 vai além da eficiência produtiva da 4.0: coloca o ser humano, a sustentabilidade e a resiliência no centro do desenvolvimento. A IA colabora com humanos; a economia circular substitui o desperdício; energias renováveis substituem os combustíveis fósseis. O desafio é usar a tecnologia a favor da vida.</p>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="s-row">
+        <div class="s-item green-l">
+          <div class="s-lbl">🎯 Tema</div>
+          <p>Sociedade 5.0, IA colaborativa, sustentabilidade e bem-estar humano</p>
+        </div>
+        <div class="s-item green-l">
+          <div class="s-lbl">🕹️ Objetivo</div>
+          <p>Evitar o colapso global resolvendo os desafios da Indústria 5.0 em fases progressivas</p>
+        </div>
+        <div class="s-item green-l">
+          <div class="s-lbl">⚙️ Como Funciona</div>
+          <p>Responda palavras-chave, códigos e conceitos para avançar nas 9 fases da missão</p>
+        </div>
+        <div class="s-item green-l">
+          <div class="s-lbl">📚 Aprendizagens</div>
+          <p>IA e colaboração humano-máquina, Acordo de Paris, recursos naturais, sustentabilidade</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="m5-game-wrap">
+    <div class="m5-topbar">
+      <div><div class="gt-t">🌍 Missão 5.0 — Salve o Futuro</div><div class="gt-s" id="m5-phase-label">Fase 1 de 9</div></div>
+      <div class="g-stats">
+        <div class="g-st"><div class="g-sv" id="m5-score-top" style="color:var(--greenlt);">0</div><div class="g-sl" style="color:var(--muted);">Pts</div></div>
+        <div class="g-st"><div class="g-sv" id="m5-timer-top" style="color:var(--greenlt);">0</div><div class="g-sl" style="color:var(--muted);">Seg</div></div>
+      </div>
+    </div>
+    <div id="m5-pbar-wrap"><div id="m5-pbar"></div></div>
+    <div id="m5-game-panel" class="m5-phase"></div>
+    <div id="m5-final" style="display:none;">
+      <h2>🚀 MISSÃO CONCLUÍDA!</h2>
+      <div class="m5-score-big" id="m5-final-score">0</div>
+      <p>pontos conquistados · O futuro foi salvo!</p>
+      <p style="margin:12px 0;color:var(--muted);font-size:13px;">Você completou as 9 fases e demonstrou conhecimento sobre IA, sustentabilidade e Indústria 5.0. Continue para a Reflexão Final!</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+        <button class="btn btn-green" onclick="m5Replay()">🔄 Jogar novamente</button>
+        <button class="btn btn-nav" onclick="openMod('reflexao')">💭 Reflexão Final →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medals -->
+  <div class="medals-sec green">
+    <h3>🏆 Suas Conquistas — Módulo 5</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-m5s"><div class="m-circle gn">🌱</div><div class="m-name">Agente 5.0</div><div class="m-desc">Iniciou a missão</div></div>
+      <div class="m-item" id="m-m5p"><div class="m-circle gn">⚡</div><div class="m-name">Fase 1 Completa</div><div class="m-desc">Sobreviveu à IA</div></div>
+      <div class="m-item" id="m-m5f"><div class="m-circle gn">🌍</div><div class="m-name">Herói do Futuro</div><div class="m-desc">Missão concluída!</div></div>
+    </div>
+  </div>
+  <div class="center mt-32"><button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button></div>
+</div>
+
+<!-- ████████████████  REFLEXÃO FINAL  ████████████████ -->
+<div id="reflexaoPage" class="page">
+  <div class="mod-header green">
+    <h2>💭 Reflexão Final</h2>
+    <p>Conecte as revoluções e reflita sobre o papel humano no futuro da indústria</p>
+  </div>
+
+  <div class="refl-q">
+    <h3>🧠 Desafio Final: Pensamento Crítico</h3>
+    <p>Ao longo dos módulos, você vivenciou diferentes Revoluções Industriais — do vapor à Inteligência Artificial. Agora é hora de conectar tudo:</p>
+
+    <!-- Connection pills -->
+    <div class="refl-connections">
+      <div class="refl-pill"><strong>🏭 1ª RI</strong>Vapor, mecanização e urbanização</div>
+      <div class="refl-pill"><strong>⚡ 2ª RI</strong>Eletricidade, petróleo e fordismo</div>
+      <div class="refl-pill" style="border-left-color:var(--blue)"><strong>🗺️ Séc. XX</strong>Produção em massa e DIT</div>
+      <div class="refl-pill" style="border-left-color:var(--blue)"><strong>🤖 Ind. 4.0</strong>IA, IoT e cidades inteligentes</div>
+      <div class="refl-pill" style="border-left-color:var(--green)"><strong>🌱 Ind. 5.0</strong>Sustentabilidade e colaboração</div>
+    </div>
+
+    <p style="margin-top:16px;font-style:italic;font-size:14px;color:var(--goldlt);">
+      "Ao longo dos desafios, você vivenciou diferentes revoluções industriais. Na sua opinião, <strong>como essas transformações impactam o mundo atual e qual é o papel do ser humano no futuro da indústria?</strong>"
+    </p>
+  </div>
+
+  <div class="refl-q" style="margin-top:16px;">
+    <h3 style="margin-bottom:12px;">✍️ Sua Resposta</h3>
+    <div class="form-group">
+      <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;">Seu nome:</label>
+      <input type="text" id="refl-name" placeholder="Digite seu nome" style="width:100%;padding:10px 13px;background:var(--card2);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);font-family:'Lato',sans-serif;outline:none;margin-bottom:14px;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div class="form-group">
+      <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;">Sua reflexão (mínimo 80 caracteres):</label>
+      <textarea id="refl-text" class="r-textarea" rows="6" placeholder="Escreva sua reflexão conectando o que você aprendeu sobre as Revoluções Industriais com o mundo atual e o futuro..." oninput="updateCharCount()"></textarea>
+      <div class="char-c" id="refl-cc">0 / 80 mínimo</div>
+    </div>
+    <div class="center" style="margin-top:14px;">
+      <button class="btn btn-green" onclick="submitRefl()">Enviar Reflexão 🚀</button>
+    </div>
+  </div>
+
+  <div id="refl-success" style="display:none;" class="refl-ok">
+    <div style="font-size:48px;margin-bottom:10px;animation:bounce 1.2s ease infinite;">🌟</div>
+    <h3>Reflexão enviada com sucesso!</h3>
+    <p>Parabéns! Você completou a jornada pelas Revoluções Industriais. Continue explorando o Museu Final!</p>
+    <div style="margin-top:14px;">
+      <button class="btn btn-nav" onclick="openMod('museufinal')">🏛️ Museu Final →</button>
+    </div>
+  </div>
+
+  <!-- Medals -->
+  <div class="medals-sec green" style="margin-top:28px;">
+    <h3>🏆 Suas Conquistas — Reflexão</h3>
+    <div class="medal-grid">
+      <div class="m-item" id="m-pens"><div class="m-circle gn">💭</div><div class="m-name">Pensador Crítico</div><div class="m-desc">Enviou reflexão</div></div>
+      <div class="m-item" id="m-conn"><div class="m-circle gn">🔗</div><div class="m-name">Conector</div><div class="m-desc">Conectou todas as RIs</div></div>
+    </div>
+  </div>
+  <div class="center mt-32"><button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button></div>
+</div>
+
+<!-- ████████████████  MUSEU FINAL  ████████████████ -->
+<div id="museufinalPage" class="page">
+  <div class="mod-header">
+    <h2>🏛️ Museu Industrial — Jogo Final</h2>
+    <p>Experiência imersiva que conecta todos os módulos da jornada</p>
+  </div>
+  <div class="s-info-card" style="margin-bottom:20px;">
+    <div class="s-header">
+      <div class="s-ico">🎯</div>
+      <div>
+        <h3>Missão Final</h3>
+        <p>Você percorreu as Revoluções Industriais do vapor à IA. Agora explore o Museu Interativo, descubra conexões entre todos os períodos e conclua sua missão. Cada artefato esconde uma pista — explore tudo!</p>
+      </div>
+    </div>
+  </div>
+  <div class="gen-wrap">
+    <h3>🏛️ Museu Interativo — Revoluções Industriais</h3>
+    <p>Navegue pelo espaço, clique nos objetos interativos e complete os desafios finais:</p>
+    <iframe src="https://view.genially.com/69b3362d508d939cda4b8dd9/interactive-content-museu" style="width:100%;height:760px;border:none;" title="Museu Final" allow="fullscreen;picture-in-picture"></iframe>
+  </div>
+  <div style="background:rgba(217,119,6,.07);border-left:3px solid var(--amber);border-radius:8px;padding:14px 18px;margin-top:16px;">
+    <p style="font-family:'Oswald',sans-serif;color:var(--gold);font-size:14px;margin-bottom:6px;">💡 Dicas de Exploração</p>
+    <ul style="color:var(--muted);font-size:12px;line-height:1.9;padding-left:18px;">
+      <li>Clique em todos os objetos e elementos interativos</li>
+      <li>Conecte o que você vê com os conteúdos dos 5 módulos</li>
+      <li>Complete todos os desafios internos do museu</li>
+      <li>Descubra as conexões entre as diferentes revoluções</li>
+    </ul>
+  </div>
+  <div class="center mt-32"><button class="btn btn-nav" onclick="goHome()">⬅️ Voltar ao Início</button></div>
+</div>
+
+</main>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+<!-- VISIT COUNTER -->
+<div class="vctr">👁️ <b id="vcNum">0</b></div>
+
+<!-- ═══════════════════════════════════════════
+     CORE JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+/* ── STATE ───────────────────────────────── */
+let gPts = 0, gMeds = 0;
+let medals = {};
+let leafletMap = null;
+let qzAnswers = {}, qzSubmitted = false;
+const qzCorrect = { q1:'b', q2:'c', q3:'b', q4:'c' };
+
+/* ── VISIT COUNTER ───────────────────────── */
+(function(){
+  let v = +(localStorage.getItem('mi2_v')||0)+1;
+  localStorage.setItem('mi2_v', v);
+  document.getElementById('vcNum').textContent = v;
+})();
+
+/* ── TOAST ───────────────────────────────── */
+let toastT;
+function showToast(msg, green=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (green?' green':'');
+  clearTimeout(toastT);
+  toastT = setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+/* ── HEADER ──────────────────────────────── */
+function updHdr() {
+  document.getElementById('hPts').textContent = gPts;
+  document.getElementById('hMeds').textContent = gMeds;
+}
+
+/* ── ADD POINTS ──────────────────────────── */
+function addPts(n) {
+  gPts += n; updHdr();
+}
+
+/* ── MEDALS ──────────────────────────────── */
+function unlockMedal(id, name, icon, green=false) {
+  if (medals[id]) return;
+  medals[id] = true;
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('on'); if(green) el.classList.add('gn'); }
+  gMeds++; updHdr();
+  showToast(`🎉 Medalha: ${icon} ${name}!`, green);
+}
+
+/* ── NAVIGATION ──────────────────────────── */
+function openMod(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id+'Page').classList.add('active');
+  document.getElementById('backBtn').style.display='block';
+  window.scrollTo(0,0);
+
+  if (id==='module1') {
+    showToast('🏭 Módulo 1 iniciado!');
+    setTimeout(()=>unlockMedal('m-museu1','Museólogo','🏛️'),4000);
+  }
+  if (id==='module2') {
+    showToast('⚡ Módulo 2 — Jogue o tabuleiro!');
+    setTimeout(()=>unlockMedal('m-tabuleiro','Estrategista','🎲'),3000);
+    setTimeout(()=>{ unlockMedal('m-ford','Fordista','🚗'); addPts(20); },6000);
+  }
+  if (id==='module3') {
+    showToast('🗺️ Fábricas do Mundo — vamos construir!');
+    setTimeout(()=>{ g1Init(); unlockMedal('m-m3s','Cartógrafo','🗺️'); },100);
+  }
+  if (id==='module4') {
+    showToast('🤖 Rede 4.0 — classifique as tecnologias!');
+    setTimeout(()=>{ g2Init(); unlockMedal('m-m4s','Inovador','💡'); },100);
+  }
+  if (id==='module5') {
+    showToast('🌱 Missão 5.0 — salve o futuro!', true);
+    setTimeout(()=>{ m5Init(); unlockMedal('m-m5s','Agente 5.0','🌱',true); },100);
+  }
+  if (id==='reflexao') { showToast('💭 Hora da reflexão final!', true); }
+  if (id==='museufinal') { showToast('🏛️ Museu Final desbloqueado!'); }
+}
+
+function goHome() {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('homePage').classList.add('active');
+  document.getElementById('backBtn').style.display='none';
+  window.scrollTo(0,0);
+}
+
+/* ── MODULE 1 QUIZ ───────────────────────── */
+document.querySelectorAll('.opt').forEach(b => {
+  b.addEventListener('click', ()=>{
+    if (qzSubmitted) return;
+    const q = b.dataset.q;
+    document.querySelectorAll(`[data-q="${q}"]`).forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    qzAnswers[q] = b.dataset.a;
+  });
+});
+
+function submitQz() {
+  if (qzSubmitted) return;
+  if (Object.keys(qzAnswers).length < 4) { showToast('⚠️ Responda todas as questões!'); return; }
+  qzSubmitted = true;
+  document.getElementById('submitQzBtn').disabled = true;
+  let sc = 0;
+  Object.entries(qzCorrect).forEach(([q,ca])=>{
+    const ua = qzAnswers[q], ok = ua===ca;
+    if(ok) sc++;
+    document.querySelectorAll(`[data-q="${q}"]`).forEach(b=>{
+      b.style.pointerEvents='none';
+      if(b.dataset.a===ca) b.classList.add('ok');
+      else if(b.dataset.a===ua&&!ok) b.classList.add('ng');
+    });
+  });
+  unlockMedal('m-quiz1','Pensador','💭');
+  if(sc===4) unlockMedal('m-master1','Mestre Industrial','👑');
+  addPts(sc*25);
+  document.getElementById('m1Pts').textContent = sc*25;
+  const medals_cnt = ['m-museu1','m-quiz1','m-master1'].filter(x=>medals[x]).length;
+  document.getElementById('m1Meds').textContent = medals_cnt;
+  let ico='🥉',fb='Continue praticando!';
+  if(sc===4){ico='🥇';fb='Excelente! Você dominou o conteúdo!';}
+  else if(sc>=3){ico='🥈';fb='Muito bem! Pequenos detalhes para revisar.';}
+  document.getElementById('qz-result').style.display='block';
+  document.getElementById('qz-result').innerHTML=`
+    <div class="qz-res">
+      <h3>🎊 Desafio Concluído!</h3>
+      <div class="bounce-ico">${ico}</div>
+      <div class="score-big">${sc}/4</div>
+      <p style="color:var(--muted);font-size:14px;margin:10px 0;">${fb}</p>
+      <button class="btn btn-nav" onclick="goHome()" style="margin-top:8px;">⬅️ Voltar ao Início</button>
+    </div>`;
+  document.getElementById('qz-result').scrollIntoView({behavior:'smooth'});
+}
+
+/* ── REFLECTION ──────────────────────────── */
+function updateCharCount(){
+  const l = document.getElementById('refl-text').value.length;
+  const cc = document.getElementById('refl-cc');
+  cc.textContent = `${l} / 80 mínimo`;
+  cc.style.color = l>=80 ? 'var(--green)' : 'var(--muted)';
+}
+
+function submitRefl(){
+  const name = (document.getElementById('refl-name').value||'').trim();
+  const txt  = (document.getElementById('refl-text').value||'').trim();
+  if(name.length<2){ showToast('⚠️ Digite seu nome'); return; }
+  if(txt.length<80){ showToast('⚠️ Reflexão precisa de 80+ caracteres'); return; }
+  document.querySelector('#reflexaoPage .refl-q:last-of-type').style.display='none';
+  document.getElementById('refl-success').style.display='block';
+  unlockMedal('m-pens','Pensador Crítico','💭',true);
+  unlockMedal('m-conn','Conector','🔗',true);
+  addPts(80);
+  document.getElementById('refl-success').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     GAME 1 — FÁBRICAS DO MUNDO
+═══════════════════════════════════════════ -->
+<script>
+const G1Q = [
+  {q:"Qual país criou a linha de montagem e popularizou o automóvel no início do séc. XX?",opts:["Grã-Bretanha","Estados Unidos","Alemanha","França"],c:1,fb:"✅ Henry Ford implantou a linha de montagem em Detroit (EUA) em 1913, criando o modelo fordista de produção em massa.",f:{x:"20%",y:"30%"}},
+  {q:"A 2ª Revolução Industrial foi marcada por qual nova fonte de energia?",opts:["Carvão mineral","Energia solar","Eletricidade","Energia eólica"],c:2,fb:"✅ A eletricidade transformou a produção, iluminou as cidades e permitiu o trabalho noturno.",f:{x:"48%",y:"17%"}},
+  {q:"O Imperialismo do fim do séc. XIX está ligado à 2ª RI porque:",opts:["As potências precisavam exportar emigrantes","Necessitavam de matérias-primas e mercados consumidores","As colônias financiavam a indústria","Os países africanos eram mais industrializados"],c:1,fb:"✅ A industrialização gerou demanda por borracha, cobre e petróleo, impulsionando o imperialismo pela África e Ásia.",f:{x:"44%",y:"42%"}},
+  {q:"Qual país asiático foi o primeiro a se industrializar no fim do séc. XIX?",opts:["China","Índia","Japão","Coreia"],c:2,fb:"✅ O Japão, após a Restauração Meiji (1868), adaptou tecnologias ocidentais tornando-se a 1ª potência industrial asiática.",f:{x:"77%",y:"25%"}},
+  {q:"O fordismo caracteriza-se por:",opts:["Produção artesanal e personalizada","Produção em série e linha de montagem","Produção digital por robôs","Produção agrícola mecanizada"],c:1,fb:"✅ O fordismo implantou a produção em série com tarefas repetitivas, barateando produtos e criando o consumo de massas.",f:{x:"25%",y:"53%"}},
+  {q:"A 'divisão internacional do trabalho' criada na 2ª RI significa:",opts:["Trabalhadores de vários países dividindo os mesmos empregos","Países centrais manufaturando e periféricos fornecendo matéria-prima","Divisão entre manuais e intelectuais","Acordo entre sindicatos internacionais"],c:1,fb:"✅ A DIT criou hierarquia: países centrais produziam manufaturados; países periféricos forneciam matérias-primas baratas.",f:{x:"59%",y:"63%"}},
+  {q:"Qual setor liderado pela Alemanha na 2ª RI?",opts:["Têxtil","Cerâmica","Química e elétrica","Construção civil"],c:2,fb:"✅ A Alemanha liderou indústria química (corantes, fertilizantes) e elétrica (Siemens), superando a Grã-Bretanha.",f:{x:"49%",y:"14%"}},
+  {q:"O Brasil na 2ª RI atuava principalmente como:",opts:["País exportador de manufaturados","Exportador de matérias-primas e importador de manufaturados","Centro financeiro global","Potência militar"],c:1,fb:"✅ O Brasil era país periférico: exportava café e borracha e importava industrializados europeus — reforçando a dependência.",f:{x:"23%",y:"58%"}}
+];
+
+let g1C=0,g1Sc=0,g1Lv=3,g1Dn=false;
+const g1Em=["🏭","⚙️","🔧","🏗️","🔩","⛏️","🚂","💡"];
+
+function g1Init(){
+  g1C=0;g1Sc=0;g1Lv=3;g1Dn=false;
+  document.getElementById('g1-score').textContent=0;
+  document.getElementById('g1-lives').textContent=3;
+  document.getElementById('g1-res').style.display='none';
+  document.getElementById('g1-qpanel').style.display='';
+  document.getElementById('g1-facs').innerHTML='';
+  document.getElementById('g1-hint').style.display='';
+  g1Show();
+}
+function g1Show(){
+  if(g1C>=G1Q.length){g1End();return;}
+  const q=G1Q[g1C];
+  document.getElementById('g1-prog').textContent=`Pergunta ${g1C+1} de ${G1Q.length}`;
+  document.getElementById('g1-qtext').textContent=q.q;
+  const od=document.getElementById('g1-opts');od.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='g1ob';b.textContent=o;
+    b.onclick=()=>g1Ans(i,b);od.appendChild(b);
+  });
+  document.getElementById('g1-fb').style.display='none';
+  document.getElementById('g1-nxt').style.display='none';
+  g1Dn=false;
+}
+function g1Ans(i,btn){
+  if(g1Dn)return;g1Dn=true;
+  const q=G1Q[g1C];
+  const all=document.querySelectorAll('.g1ob');
+  const fb=document.getElementById('g1-fb');
+  if(i===q.c){
+    btn.classList.add('ok');
+    fb.className='gfbok';fb.textContent=q.fb;fb.style.display='block';
+    g1Sc++;document.getElementById('g1-score').textContent=g1Sc;
+    document.getElementById('g1-facs').innerHTML+=`<div style="position:absolute;font-size:1.5rem;left:${q.f.x};top:${q.f.y};filter:drop-shadow(0 2px 4px rgba(0,0,0,.9));transition:all .4s;">${g1Em[g1Sc%g1Em.length]}</div>`;
+    document.getElementById('g1-hint').style.display='none';
+    addPts(25);
+    if(g1Sc>=5) unlockMedal('m-m3f','Capitalista','🏭');
+  } else {
+    btn.classList.add('ng');all[q.c].classList.add('ok');
+    g1Lv--;document.getElementById('g1-lives').textContent=g1Lv;
+    fb.className='gfber';fb.textContent='❌ Incorreto. '+q.fb;fb.style.display='block';
+  }
+  document.getElementById('g1-nxt').style.display='inline-block';
+}
+function g1Next(){g1C++;g1Show();}
+function g1End(){
+  document.getElementById('g1-qpanel').style.display='none';
+  document.getElementById('g1-res').style.display='block';
+  document.getElementById('g1-fs').textContent=g1Sc;
+  document.getElementById('m3Pts').textContent=g1Sc*25;
+  document.getElementById('m3Fac').textContent=g1Sc;
+  const p=g1Sc/G1Q.length;
+  let r,m;
+  if(p>=.875){r='🏆 Magnata Industrial!';m='Você domina a industrialização do Séc. XX!';unlockMedal('m-m3p','Magnata','🏆');}
+  else if(p>=.625){r='⚙️ Empresário em Ascensão!';m='Bom trabalho! Revise os pontos com dificuldade.';}
+  else if(p>=.375){r='🔧 Aprendiz Industrial';m='Continue estudando e tente novamente.';}
+  else{r='📚 Retome os estudos';m='Revise o material e jogue novamente!';}
+  document.getElementById('g1-rt').textContent=r;
+  document.getElementById('g1-msg').textContent=m;
+}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     GAME 2 — REDE 4.0
+═══════════════════════════════════════════ -->
+<script>
+const G2R=[
+  {title:"Classifique: Físico, Digital ou Biológico?",instr:"Segundo Schwab, a 4ª Rev. Industrial atua em 3 pilares. Selecione cada tecnologia e clique na categoria correta:",items:[{n:"🤖 Robôs autônomos",c:"Físico"},{n:"🧬 Edição genética CRISPR",c:"Biológico"},{n:"☁️ Computação em nuvem",c:"Digital"}],cats:["Físico","Digital","Biológico"],fb:"Robôs → Físico; CRISPR → Biológico; Nuvem → Digital."},
+  {title:"Verdade ou Mito?",instr:"Selecione cada afirmação e classifique:",items:[{n:"A IA vai eliminar todos os empregos",c:"Mito"},{n:"A 4ª Rev. transforma estruturalmente o trabalho",c:"Verdade"},{n:"Todos os países se beneficiarão igualmente",c:"Mito"}],cats:["Verdade","Mito","Discutível"],fb:"A IA não elimina todos os empregos (mito), mas transforma o trabalho (verdade). A distribuição desigual é real."},
+  {title:"Tecnologia × Setor de Impacto",instr:"Qual o principal setor de impacto de cada tecnologia?",items:[{n:"🏥 Biossensores e IA médica",c:"Saúde"},{n:"🚗 Veículos autônomos",c:"Transporte"},{n:"📱 Cidades inteligentes (IoT)",c:"Urbanismo"}],cats:["Saúde","Transporte","Urbanismo"],fb:"Biossensores → Saúde; Veículos autônomos → Transporte; IoT urbana → Urbanismo."},
+  {title:"Líderes Globais da 4ª RI",instr:"Relacione cada player ao seu destaque:",items:[{n:"🇺🇸 OpenAI, Google, Meta",c:"EUA"},{n:"🇩🇪 Automação Siemens",c:"Alemanha"},{n:"🇨🇳 Baidu, Alibaba, Huawei",c:"China"}],cats:["EUA","Alemanha","China"],fb:"EUA lideram IA; Alemanha lidera automação industrial; China avança com IA nacional e chips."},
+  {title:"Impactos para o Sul Global",instr:"Classifique cada impacto:",items:[{n:"Acesso a serviços via smartphones",c:"Positivo"},{n:"Automação substitui empregos industriais",c:"Negativo"},{n:"Dados pessoais como matéria-prima",c:"Ambíguo"}],cats:["Positivo","Negativo","Ambíguo"],fb:"Acesso digital é positivo; automação é negativa para empregos industriais; dados pessoais são ambíguos."},
+  {title:"Brasil na 4ª Revolução",instr:"Classifique cada elemento brasileiro:",items:[{n:"🌾 Agro tecnológico (AgTech)",c:"Ponto forte"},{n:"💸 Baixo investimento em P&D",c:"Desafio"},{n:"🏙️ Startups e fintechs",c:"Ponto forte"}],cats:["Ponto forte","Desafio","Neutro"],fb:"AgTech e fintechs são pontos fortes. Investimento em P&D ≈1% do PIB é um desafio crítico."}
+];
+
+let g2R=0,g2Sc=0,g2Cb=1,g2Sel={},g2Selc=null;
+
+function g2Init(){
+  g2R=0;g2Sc=0;g2Cb=1;g2Sel={};g2Selc=null;
+  document.getElementById('g2-score').textContent=0;
+  document.getElementById('g2-combo').textContent='x1';
+  document.getElementById('g2-res').style.display='none';
+  document.getElementById('g2-panel').style.display='';
+  document.getElementById('g2-term').innerHTML=
+    `<span style="color:var(--goldlt);">[CIDADE INTELIGENTE 4.0]</span><br>`+
+    `<span style="color:var(--muted);">&gt; Sistema reiniciado. Classifique as tecnologias!</span><br>`+
+    `<span style="animation:blink4 1s infinite;color:var(--amber);">_</span>`;
+  g2Show();
+}
+function g2Show(){
+  if(g2R>=G2R.length){g2End();return;}
+  const r=G2R[g2R];g2Sel={};g2Selc=null;
+  document.getElementById('g2-prog').textContent=`Rodada ${g2R+1} de ${G2R.length}`;
+  document.getElementById('g2-qtitle').textContent=r.title;
+  document.getElementById('g2-instr').textContent=r.instr;
+  document.getElementById('g2-fb').style.display='none';
+  document.getElementById('g2-nxt').style.display='none';
+  const ca=document.getElementById('g2-cards');ca.innerHTML='';
+  r.items.forEach((it,i)=>{
+    const c=document.createElement('div');c.className='g2tc';c.id=`g2c${i}`;c.textContent=it.n;
+    c.onclick=()=>g2Sel2(i,c);ca.appendChild(c);
+  });
+  const dr=document.getElementById('g2-drops');dr.innerHTML='';
+  r.cats.forEach((cat,ci)=>{
+    const z=document.createElement('div');z.id=`g2z${ci}`;
+    z.style.cssText='background:var(--card2);border:1px dashed var(--border);border-radius:8px;padding:9px;min-height:56px;cursor:pointer;transition:border-color .2s;';
+    z.innerHTML=`<div style="font-size:9px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">${cat}</div><div id="g2ph${ci}" style="font-size:11px;color:var(--muted);font-style:italic;">— clique —</div>`;
+    z.onclick=()=>g2Drop(ci,cat);
+    z.onmouseover=()=>z.style.borderColor='var(--amber)';
+    z.onmouseout=()=>z.style.borderColor='var(--border)';
+    dr.appendChild(z);
+  });
+}
+function g2Sel2(i,el){
+  if(el.classList.contains('used'))return;
+  document.querySelectorAll('.g2tc').forEach(c=>c.classList.remove('sel'));
+  if(g2Selc&&g2Selc.i===i){g2Selc=null;return;}
+  el.classList.add('sel');g2Selc={i,el,it:G2R[g2R].items[i]};
+}
+function g2Drop(ci,cat){
+  if(!g2Selc)return;
+  const {i,el,it}=g2Selc;
+  Object.keys(g2Sel).forEach(k=>{
+    if(g2Sel[k]&&g2Sel[k].i===i){
+      const ch=document.getElementById(`g2z${k}`).querySelector(`[data-ci="${i}"]`);
+      if(ch)ch.remove();document.getElementById(`g2ph${k}`).style.display='';delete g2Sel[k];
+    }
+  });
+  const zone=document.getElementById(`g2z${ci}`);
+  document.getElementById(`g2ph${ci}`).style.display='none';
+  const chip=document.createElement('div');chip.setAttribute('data-ci',i);
+  chip.style.cssText='background:var(--amber);color:#080f1a;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;margin-top:3px;cursor:pointer;display:inline-block;';
+  chip.textContent=it.n;
+  chip.onclick=(e)=>{e.stopPropagation();chip.remove();el.classList.remove('used');delete g2Sel[ci];document.getElementById(`g2ph${ci}`).style.display='';};
+  zone.appendChild(chip);el.classList.remove('sel');el.classList.add('used');g2Sel[ci]={i,cat};g2Selc=null;
+}
+function g2Check(){
+  const r=G2R[g2R];
+  if(Object.keys(g2Sel).length<r.items.length){
+    const fb=document.getElementById('g2-fb');fb.className='gfber';fb.textContent='⚠️ Classifique todos antes de verificar!';fb.style.display='block';return;
+  }
+  let ok=0;
+  r.cats.forEach((cat,ci)=>{if(g2Sel[ci]&&r.items[g2Sel[ci].i].c===cat)ok++;});
+  const fb=document.getElementById('g2-fb');
+  if(ok===r.items.length){
+    fb.className='gfbok';fb.textContent='✅ Perfeito! '+r.fb;fb.style.display='block';
+    const pts=100*g2Cb;g2Sc+=pts;g2Cb=Math.min(g2Cb+1,5);
+    document.getElementById('g2-score').textContent=g2Sc;
+    document.getElementById('g2-combo').textContent=`x${g2Cb}`;
+    document.getElementById('m4Pts').textContent=g2Sc;
+    document.getElementById('m4Combo').textContent=`x${g2Cb}`;
+    addPts(pts);
+    if(g2Cb>=3)unlockMedal('m-m4c','Combo Master','🔥');
+    document.getElementById('g2-term').innerHTML+=`<br><span style="color:var(--greenlt);">&gt; MÓDULO ${g2R+1} ✓ +${pts}pts</span><br><span style="animation:blink4 1s infinite;color:var(--amber);">_</span>`;
+  } else {
+    fb.className='gfber';fb.textContent=`❌ ${ok}/${r.items.length} corretos. ${r.fb}`;fb.style.display='block';
+    g2Cb=1;document.getElementById('g2-combo').textContent='x1';document.getElementById('m4Combo').textContent='x1';
+    document.getElementById('g2-term').innerHTML+=`<br><span style="color:var(--red);">&gt; ERRO: ${r.items.length-ok} incorreta(s).</span><br><span style="animation:blink4 1s infinite;color:var(--amber);">_</span>`;
+  }
+  document.getElementById('g2-nxt').style.display='inline-block';
+}
+function g2Next(){g2R++;g2Show();}
+function g2End(){
+  document.getElementById('g2-panel').style.display='none';
+  document.getElementById('g2-res').style.display='block';
+  document.getElementById('g2-fs').textContent=g2Sc;
+  let r,m;
+  if(g2Sc>=500){r='🏆 Arquiteto(a) do Futuro!';m='Você domina a 4ª Revolução Industrial!';unlockMedal('m-m4a','Arquiteto','🏙️');}
+  else if(g2Sc>=300){r='💡 Inovador(a) Digital!';m='Bom trabalho! Revise os erros.';}
+  else{r='📱 Aprendiz Conectado(a)';m='Releia o conteúdo da 4ª RI e tente novamente.';}
+  document.getElementById('g2-rt').textContent=r;document.getElementById('g2-msg').textContent=m;
+}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     GAME 3 — MISSÃO 5.0
+═══════════════════════════════════════════ -->
+<script>
+const M5F = [
+  {titulo:"Fase 1 — Inteligência Artificial",pergunta:"Eu aprendo com dados, mas preciso do humano para decidir. Quem sou eu?",respostas:["inteligencia artificial","ia","inteligência artificial"],dica:"Presente em redes sociais, algoritmos e robôs.",pts:30},
+  {titulo:"Fase 1 — Código",pergunta:"Em qual década houve a explosão da IA?",respostas:["2010","anos 2010","década de 2010"],pts:20},
+  {titulo:"Fase 1 — Conceito-chave",pergunta:"Qual a palavra que define a relação ideal entre humano e máquina na Indústria 5.0?",respostas:["colaboração","colaboracao","cooperação","cooperacao"],pts:20},
+  {titulo:"Fase 2 — Sustentabilidade",pergunta:"Sou essencial para a indústria, estou em tudo, mas posso acabar. O que sou?",respostas:["recurso natural","recurso","recursos naturais"],dica:"Madeira, água, minérios, petróleo...",pts:30},
+  {titulo:"Fase 2 — Código",pergunta:"Em que ano foi assinado o Acordo de Paris sobre clima?",respostas:["2015"],pts:20},
+  {titulo:"Fase 2 — Conceito-chave",pergunta:"Qual conceito é a BASE da Indústria 5.0?",respostas:["sustentabilidade"],dica:"Suprir necessidades sem comprometer as gerações futuras.",pts:20},
+  {titulo:"Fase 3 — Indústria 5.0",pergunta:"Não substituo humanos — trabalho ao lado deles. O que sou?",respostas:["industria 5.0","indústria 5.0","industria 5","ind 5.0"],pts:30},
+  {titulo:"Fase 3 — Código",pergunta:"Em qual século vivemos?",respostas:["21","século 21","seculo 21","xxi","século xxi"],pts:20},
+  {titulo:"Fase 3 — Missão Final",pergunta:"Você atravessou todas as fases. O que você ajudou a salvar?",respostas:["futuro","o futuro"],pts:50}
+];
+
+let m5Fase=0, m5Score=0, m5Timer=0, m5TimerInt=null, m5Running=false;
+
+function m5Init(){
+  m5Fase=0; m5Score=0; m5Timer=0; m5Running=true;
+  clearInterval(m5TimerInt);
+  m5TimerInt=setInterval(()=>{
+    if(!m5Running)return;
+    m5Timer++;
+    document.getElementById('m5-timer-top').textContent=m5Timer;
+  },1000);
+  document.getElementById('m5-final').style.display='none';
+  document.getElementById('m5-game-panel').style.display='';
+  m5ShowFase();
+}
+
+function m5ShowFase(){
+  if(m5Fase>=M5F.length){m5End();return;}
+  const f=M5F[m5Fase];
+  const prog=Math.round((m5Fase/M5F.length)*100);
+  document.getElementById('m5-pbar').style.width=prog+'%';
+  document.getElementById('m5-phase-label').textContent=`Fase ${m5Fase+1} de ${M5F.length}`;
+  document.getElementById('m5-score-top').textContent=m5Score;
+  document.getElementById('m5-game-panel').innerHTML=`
+    <h2>${f.titulo}</h2>
+    <p class="m5-q">${f.pergunta}</p>
+    ${f.dica?`<p class="m5-hint">💡 Dica: ${f.dica}</p>`:''}
+    <div class="m5-input-row">
+      <input id="m5-inp" class="m5-inp" type="text" placeholder="Digite sua resposta..." autocomplete="off"
+        onkeydown="if(event.key==='Enter')m5Validar()">
+      <button class="btn btn-green" onclick="m5Validar()">Responder ▶</button>
+    </div>
+    <div id="m5-fb" class="m5-fb" style="display:none;"></div>
+  `;
+  setTimeout(()=>{ const inp=document.getElementById('m5-inp'); if(inp)inp.focus(); },100);
+}
+
+function m5Validar(){
+  const inp=document.getElementById('m5-inp');
+  if(!inp)return;
+  const val=inp.value.toLowerCase().trim();
+  const f=M5F[m5Fase];
+  const fb=document.getElementById('m5-fb');
+  if(f.respostas.includes(val)){
+    fb.className='m5-fb ok';
+    fb.innerHTML=`✅ Correto! +${f.pts} pontos`;
+    fb.style.display='block';
+    m5Score+=f.pts;
+    document.getElementById('m5-score-top').textContent=m5Score;
+    addPts(f.pts);
+    inp.disabled=true;
+    // Unlock milestone medals
+    if(m5Fase===2) unlockMedal('m-m5p','Fase 1 Completa','⚡',true);
+    setTimeout(()=>{m5Fase++;m5ShowFase();},900);
+  } else {
+    fb.className='m5-fb er';
+    fb.innerHTML='❌ Tente novamente...';
+    fb.style.display='block';
+    inp.value='';inp.focus();
+    setTimeout(()=>{fb.style.display='none';},1500);
+  }
+}
+
+function m5End(){
+  m5Running=false; clearInterval(m5TimerInt);
+  document.getElementById('m5-pbar').style.width='100%';
+  document.getElementById('m5-game-panel').style.display='none';
+  document.getElementById('m5-final').style.display='block';
+  document.getElementById('m5-final-score').textContent=m5Score;
+  document.getElementById('m5Pts').textContent=m5Score;
+  document.getElementById('m5Phases').textContent='9/9';
+  unlockMedal('m-m5f','Herói do Futuro','🌍',true);
+  addPts(50); // completion bonus
+  showToast('🌍 MISSÃO CONCLUÍDA! Você salvou o futuro!',true);
+}
+
+function m5Replay(){
+  document.getElementById('m5-score-top').textContent=0;
+  document.getElementById('m5-timer-top').textContent=0;
+  m5Init();
+}
+</script>
+
+</body>
+</html>
